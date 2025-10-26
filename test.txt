@@ -1,0 +1,747 @@
+#==============================================================================================
+#============================== TO INSERT DATA USING SHELL ====================================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> obj1 = Jobs(name="Raj", age=26, department="IT", salary=22000, email="raj@gmail.com")
+>>> obj1.save()
+>>> del obj1
+>>> exit()
+
+
+#==============================================================================================
+#===================== LOGIC TO GET THE VALUE PARTICULAR FIELD VALUE ==========================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> name = Jobs.objects.values('name')
+>>> for i in name:
+...     print(i['name'])
+... 
+Swaraj
+Hari
+Hari
+Ashish
+>>> del name
+
+#==============================================================================================
+#============================ INSERT BULK DATA USING bulk_create() ============================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> list_jobs = [
+...     Jobs(
+...             name="Hari",
+...             age=22,
+...             department="IT",
+...             salary=75000,
+...             email="hari@gmail.com"
+...     ),
+...     Jobs(
+...             name="Swaraj",
+...             age=24,
+...             department="IT",
+...             salary=55000,
+...             email="swaraj@gmail.com"
+...     )
+... ]
+>>> Jobs.objects.bulk_create(list_jobs)
+[<Jobs: Hari>, <Jobs: Swaraj>]
+>>> del list_jobs
+
+==========================> DATABASE VIEW <==========================
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  1 | Hari   |  22 | IT         | 75000.00 | hari@gmail.com
+  2 | Swaraj |  24 | IT         | 55000.00 | swaraj@gmail.com
+(2 rows)
+==========================> DATABASE VIEW <==========================
+
+#==============================================================================================
+#============================== HOW FETCH DATA USING FOR LOOP  ================================
+#==============================================================================================
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 1 =====================     
+#====================================================
+>>> from job.models import Jobs
+>>> details = Jobs.objects.all()
+>>> for i in details:
+...     print(i.name)
+... 
+hari
+Swaraj
+Sathish
+Ashish
+Mukund
+inder
+kartik
+Pradeep
+Laxmi
+Jai
+Raj
+>>> del details
+
+#==============================================================================================
+#============================== HOW FETCH DATA USING While LOOP  ================================
+#==============================================================================================
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 1 =====================     
+#====================================================
+>>> get_data = list(Jobs.objects.all())
+>>> i=0
+>>> while i < len(get_data):
+...     record = get_data[i]
+...     if record.name and record.salary and record.department:
+...             print(f"{record.name}")
+...             print(f"{record.salary}")
+...             print(f"{record.department}")
+...     else:
+...             print("Nothing")
+...     i=i+1
+... 
+Hari
+75000.00
+IT
+Swaraj
+55000.00
+IT
+Ashish
+25000.00
+Accounts
+Hari
+98000.00
+IT
+>>> del get_data
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 2 =====================     
+#====================================================
+>>> get_data = list(Jobs.objects.all())
+>>> i=0
+>>> get_number = len(get_data)
+>>> while i < get_number:
+...     record = get_data[i]
+...     if record.name and record.salary and record.department:
+...             print(f"{record.name}")
+...             print(f"{record.salary}")
+...             print(f"{record.department}")
+...     else:
+...             print("NOTHING")
+...     i=i+1
+... 
+Hari
+75000.00
+IT
+Swaraj
+55000.00
+IT
+Ashish
+25000.00
+Accounts
+Hari
+98000.00
+IT
+>>> del get_data
+
+
+#==============================================================================================
+#===================== TO GET VALUES OF PARTICULAR FIELDS USING VALLUES()  ====================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> get_salary = Jobs.objects.values('salary')
+>>> if not get_salary:
+...     print("Nothing Found")
+... else:
+...     for i in get_salary:
+...             print(i['salary'])
+... 
+55000.00
+20000.00
+20000.00
+20000.00
+>>> 
+
+
+#==============================================================================================
+#======================================== USING FILTER()  =====================================
+#==============================================================================================
+
+1> filter() gets only values which are related hari with its name
+2> if there is more then 2 values it will get all the records related to hari 
+3>
+
+>>> from job.models import Jobs 
+>>> job = Jobs.objects.filter(name="hari")
+>>> for i in job:
+...     print(i.email)
+...     print(i.salary)
+...     print(i.department)
+... 
+hari@gmail.com
+45000.00
+IT
+>>> del job
+
+#==============================================================================================
+#======================================== USING GET()  =====================================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> j = Jobs.objects.get(name="hari")
+>>> print(j.salary)
+45000.00
+>>> print(f"SALAERY : {j.salary} EMAIL : {j.email} NAME : {j.department}")
+SALAERY : 45000.00 EMAIL : hari@gmail.com NAME : IT
+>>> j.salary = 100000
+>>> j.save()
+>>> del j
+
+
+#==============================================================================================
+#=============== IF THERE IS MULTIPLE VALUES IN PARTICULAR TABLE USING FILTER() ===============
+#==============================================================================================
+>>> job = Jobs.objects.filter(name="Hari")
+>>> for i in job:
+...     print(i.name)
+...     print(i.email)
+...     print(i.salary)
+... 
+Hari
+hari@gmail.com
+75000.00
+Hari
+hari@gmail.com
+98000.00
+>>> del job
+
+
+#==============================================================================================
+#========================= USING UPDATE() BUT ONLY USING FILTER() =============================
+#==============================================================================================
+>>> Jobs.objects.filter(name="Ashish").update(salary=15000)
+1
+>>> 
+==========================> DATABASE VIEW <==========================
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       |            created_at            |            updated_at            
+----+--------+-----+------------+----------+------------------+----------------------------------+----------------------------------
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  5 | Hari   |  24 | IT         | 24000.00 | hari@gmail.com   | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  7 | Mukund |  24 | IT         | 10000.00 | mukund@gmail.com | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+(3 rows)
+
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       |            created_at            |            updated_at            
+----+--------+-----+------------+----------+------------------+----------------------------------+----------------------------------
+  5 | Hari   |  24 | IT         | 24000.00 | hari@gmail.com   | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  7 | Mukund |  24 | IT         | 10000.00 | mukund@gmail.com | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  3 | Ashish |  23 | Accounts   | 15000.00 | ashish@gmail.com | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+(3 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+
+#==============================================================================================
+#============================ UPDATE USING GET() FOR SPECIFIC ONE  ============================
+#==============================================================================================
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 1 =====================     
+#====================================================
+>>> from job.models import Jobs
+>>> j = Jobs.objects.get(name="hari")
+>>> print(j.salary)
+45000.00
+>>> print(f"SALAERY : {j.salary} EMAIL : {j.email} NAME : {j.department}")
+SALAERY : 45000.00 EMAIL : hari@gmail.com NAME : IT
+>>> j.salary = 100000
+>>> j.save()
+>>> print(f"SALAERY : {j.salary} EMAIL : {j.email} NAME : {j.department}")
+SALAERY : 100000 EMAIL : hari@gmail.com NAME : IT
+>>> del j
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 2 =====================     
+#====================================================
+
+>>> from job.models import Jobs
+>>> salary = 20000
+>>> update_salary = Jobs.objects.get(name="Ashish")
+>>> if not update_salary:
+...     print("No Data Found")
+... else:
+...     print(update_salary.salary)
+...     update_salary.salary = salary
+...     update_salary.save()
+...     print(update_salary.salary)
+... 
+25000.00
+20000
+>>> del update_salary
+
+==========================> DATABASE VIEW <==========================
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  2 | Swaraj |  24 | IT         | 55000.00 | swaraj@gmail.com
+  3 | Ashish |  23 | Accounts   | 25000.00 | ashish@gmail.com
+  1 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  4 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+(4 rows)
+
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  2 | Swaraj |  24 | IT         | 55000.00 | swaraj@gmail.com
+  1 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  4 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+(4 rows)
+==========================> DATABASE VIEW <==========================
+
+
+#==============================================================================================
+#============================ UPDATE USING FILTER() FOR ALL VALLUES  ==========================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> details = Jobs.objects.filter(name="Hari")
+>>> if not details:
+...     print("No Data Found")
+... else:
+...     for i in details:
+...             i.salary = 20000
+...             i.save()
+... 
+>>> del details
+
+
+
+
+#==============================================================================================
+#=============================== LOGIC TO NOT FOUND VALUES ====================================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> obj1 = Jobs.objects.all()
+>>> for i in obj1:
+...     if i.name and i.age and i.email:
+...             print(f"NAME : {i.name}")
+...             print(f"AGE : {i.age}")
+...             print(f"EMAIL : {i.email}")
+...     else:
+...             print("Nothing")
+... 
+>>> print("==============================================================")
+#=============== >>>  HERE NOTHING PRINTED BECAUSE IT IGNORED THE FOR LOOP BECAUSE OF NO OBJECT FOUND FROM DATABASE
+>>> del obj1
+>>> obj1 = Jobs.objects.all()
+>>> if not obj1:
+...     print("NOTHING")
+... else:
+...     for i in obj1:
+...             print(i.name)
+...             print(i.age)
+...             print(i.email)
+... 
+NOTHING
+>>> 
+
+
+
+
+
+
+
+
+#==============================================================================================
+#========================= HOW TO DELETE THE USER USING DELETE() ==============================
+#==============================================================================================
+>>> check_user = Jobs.objects.filter(name="Swaraj")
+>>> if check_user.exists():
+...     check_user.delete()
+...     print("Deleted the User")
+... else:
+...     print("User Not Found")
+... 
+(1, {'job.Jobs': 1})
+Deleted the User
+>>> 
+==========================> DATABASE VIEW <==========================
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  2 | Swaraj |  24 | IT         | 55000.00 | swaraj@gmail.com
+  1 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  4 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+(4 rows)
+
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  1 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  4 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+(3 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+
+
+
+
+#==============================================================================================
+#====================== HOW TO DELETE MULTIPLE RECORDS USING DELETE() =========================
+#==============================================================================================
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 1 =====================     
+#====================================================
+>>> from job.models import Jobs
+>>> get_details = Jobs.objects.filter(name="Hari")
+>>> if get_details.exists():
+...     print("FOUND")
+...     get_details.delete()
+... else:
+...     print("Not Found")
+... 
+FOUND
+(2, {'job.Jobs': 2})
+>>> del get_details
+
+==========================> DATABASE VIEW <==========================
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  2 | Swaraj |  24 | IT         | 55000.00 | swaraj@gmail.com
+  1 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  4 | Hari   |  22 | IT         | 20000.00 | hari@gmail.com
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+(4 rows)
+
+=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  2 | Swaraj |  24 | IT         | 55000.00 | swaraj@gmail.com
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+(1 row)
+==========================> DATABASE VIEW <==========================
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===================== OPTION 2 =====================     
+#====================================================
+
+>>> from job.models import Jobs
+>>> delete_user = Jobs.objects.filter(id=6)
+>>> if not delete_user:
+...     print("Not Found")
+... else:
+...     print("FOUND")
+...     delete_user.delete()
+... 
+FOUND
+(1, {'job.Jobs': 1})
+>>> del delete_user
+==========================> DATABASE VIEW <==========================
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+  5 | Hari   |  24 | IT         | 24000.00 | hari@gmail.com
+  6 | Ashish |  23 | Marketing  | 11000.00 | ashish@gmail.com
+(3 rows)
+
+test_3=# select * from jobs;
+ id |  name  | age | department |  salary  |      email       
+----+--------+-----+------------+----------+------------------
+  3 | Ashish |  23 | Accounts   | 20000.00 | ashish@gmail.com
+  5 | Hari   |  24 | IT         | 24000.00 | hari@gmail.com
+(2 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+
+#==============================================================================================
+#====================== HOW TO DETAILS ORDER BY() ASC AN DSC USING ORM ========================
+#==============================================================================================
+>>> asc_salary = Jobs.objects.all().order_by('salary')
+>>> for i in asc_salary:
+...     print(i.salary)
+... 
+10000.00
+10000.00
+10000.00
+10000.00
+15000.00
+22000.00
+22000.00
+24000.00
+25000.00
+25000.00
+34000.00
+34500.00
+37000.00
+1200000.00
+>>> del asc_salary
+==========================> DATABASE VIEW <==========================
+test_3=# select salary from jobs order by salary asc;
+   salary   
+------------
+   10000.00
+   10000.00
+   10000.00
+   10000.00
+   15000.00
+   22000.00
+   22000.00
+   24000.00
+   25000.00
+   25000.00
+   34000.00
+   34500.00
+   37000.00
+ 1200000.00
+(14 rows)
+
+test_3=# 
+
+>>> desc_salary = Jobs.objects.all().order_by('-salary')
+>>> for j in desc_salary:
+...     print(j.salary)
+... 
+1200000.00
+37000.00
+34500.00
+34000.00
+25000.00
+25000.00
+24000.00
+22000.00
+22000.00
+15000.00
+10000.00
+10000.00
+10000.00
+10000.00
+>>> del desc_salary
+==========================> DATABASE VIEW <==========================
+test_3=# SELECT salary FROM jobs ORDER BY salary DESC;
+   salary   
+------------
+ 1200000.00
+   37000.00
+   34500.00
+   34000.00
+   25000.00
+   25000.00
+   24000.00
+   22000.00
+   22000.00
+   15000.00
+   10000.00
+   10000.00
+   10000.00
+   10000.00
+(14 rows)
+
+test_3=# 
+
+#==============================================================================================
+#============================= ORM QUERY TO GET DATA IN LIMIT() ===============================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> get_data = Jobs.objects.all()[:5]
+>>> for i in get_data:
+...     print(i.name)
+... 
+Hari
+Mukund
+Ashish
+Swaraj
+Sathish
+>>> 
+#==============================================================================================
+#============================= ORM QUERY TO GET COUNT() ===============================
+#==============================================================================================
+>>> from job.models import Jobs
+>>> count_job = Jobs.objects.all().count()
+>>> print(count_job)
+14
+
+#==============================================================================================
+#======================== ORM QUERY TO GET COUNT() OF PARTICULAR NAME =========================
+#==============================================================================================
+>>> del count_job
+>>> count_name = Jobs.objects.filter(name='Hari').count()
+>>> print(count_name)
+1
+>>> count_name = Jobs.objects.filter(name='Swaraj').count()
+>>> print(count_name)
+2
+>>> 
+
+#==============================================================================================
+#================================= ORM QUERY TO SUM OF SALARY() ===============================
+#==============================================================================================
+>>> from django.db.models import Min, Max, Sum
+>>> from job.models import Jobs
+>>> get_sum = Jobs.objects.aggregate(Sum('salary'))
+>>> print(get_sum['salary__sum'])
+1478500.00
+>>> 
+
+#==============================================================================================
+#========================== ORM QUERY TO GET AVERGE SALARY USING Avg() ========================
+#==============================================================================================
+>>> from django.db.models import Avg, Sum, Min, Max
+>>> from job.models import Jobs
+>>> get_avg = Jobs.objects.aggregate(Avg('salary'))
+>>> print(get_avg['salary__avg'])
+105607.142857142857
+>>> 
+
+
+#==============================================================================================
+#================================= ORM QUERIES RELATED TO LIKE ================================
+#==============================================================================================
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#===== Like Query only contain name with S or H =====     
+#====================================================
+
+>>> from job.models import Jobs
+>>> get_data = Jobs.objects.filter(name__contains="H")
+>>> for i in get_data:
+...     print(i.name)
+... 
+Hari
+>>> del get_data
+>>> get_data = Jobs.objects.filter(name__contains="S")
+>>> for i in get_data:
+...     print(i.name)
+... 
+Swaraj
+Sathish
+Swaraj
+Sathish
+>>> 
+
+
+==========================> DATABASE VIEW <==========================
+1) Return all customers with a name that contains the letter 'A':
+
+test_3=# SELECT * FROM jobs WHERE name LIKE '%H%';
+ id | name | age | department |  salary  |     email      |            created_at            |            updated_at            
+----+------+-----+------------+----------+----------------+----------------------------------+----------------------------------
+  5 | Hari |  24 | IT         | 24000.00 | hari@gmail.com | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+(1 row)
+
+test_3=# 
+test_3=# SELECT * FROM jobs WHERE name LIKE '%S%';
+ id |  name   | age | department |  salary  |       email       |            created_at            |            updated_at            
+----+---------+-----+------------+----------+-------------------+----------------------------------+----------------------------------
+  8 | Swaraj  |  24 | IT         | 25000.00 | swaraj@gmail.com  | 2025-05-15 13:20:13.335307+05:30 | 2025-05-15 13:20:13.335883+05:30
+  9 | Sathish |  24 | IT         | 10000.00 | sathish@gmail.com | 2025-05-15 13:20:13.335936+05:30 | 2025-05-15 13:20:13.335952+05:30
+ 17 | Swaraj  |  24 | IT         | 25000.00 | swaraj@gmail.com  | 2025-05-15 13:44:58.574995+05:30 | 2025-05-15 13:44:58.575057+05:30
+ 18 | Sathish |  24 | IT         | 10000.00 | sathish@gmail.com | 2025-05-15 13:44:58.575118+05:30 | 2025-05-15 13:44:58.575136+05:30
+(4 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#=========== Like Query only start with A ===========     
+#====================================================
+
+>>> from job.models import Jobs
+>>> get_data = Jobs.objects.filter(name__istartswith="a")
+>>> for i in get_data:
+...     print(i.name)
+... 
+Ashish
+Akshata
+Aarti
+Adarsh
+>>> 
+==========================> DATABASE VIEW <==========================
+test_3=# SELECT * FROM jobs WHERE name LIKE 'A%';
+ id |  name   | age |  department  |   salary   |       email       |            created_at            |            updated_at            
+----+---------+-----+--------------+------------+-------------------+----------------------------------+----------------------------------
+  3 | Ashish  |  23 | Accounts     |   15000.00 | ashish@gmail.com  | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+ 12 | Akshata |  24 | IT           |   22000.00 | akshata@gmail.com | 2025-05-15 13:20:13.336119+05:30 | 2025-05-15 13:20:13.336133+05:30
+ 14 | Aarti   |  24 | Data Analyst |   34500.00 | aarti@gmail.com   | 2025-05-15 13:20:13.33622+05:30  | 2025-05-15 13:20:13.336233+05:30
+ 15 | Adarsh  |  25 | Data Analyst | 1200000.00 | adarsh@gmail.com  | 2025-05-15 13:20:13.33627+05:30  | 2025-05-15 13:20:13.336283+05:30
+(4 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#=========== Like Query only ENDSWITH with h ===========     
+#====================================================
+
+>>> from job.models import Jobs
+>>> get_data = Jobs.objects.filter(name__endswith="h")
+>>> for i in get_data:
+...     print(i.name)
+... 
+Ashish
+Sathish
+Adarsh
+Sathish
+>>> 
+==========================> DATABASE VIEW <==========================
+test_3=# SELECT * FROM jobs WHERE name LIKE '%h';
+ id |  name   | age |  department  |   salary   |       email       |            created_at            |            updated_at            
+----+---------+-----+--------------+------------+-------------------+----------------------------------+----------------------------------
+  3 | Ashish  |  23 | Accounts     |   15000.00 | ashish@gmail.com  | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  9 | Sathish |  24 | IT           |   10000.00 | sathish@gmail.com | 2025-05-15 13:20:13.335936+05:30 | 2025-05-15 13:20:13.335952+05:30
+ 15 | Adarsh  |  25 | Data Analyst | 1200000.00 | adarsh@gmail.com  | 2025-05-15 13:20:13.33627+05:30  | 2025-05-15 13:20:13.336283+05:30
+ 18 | Sathish |  24 | IT           |   10000.00 | sathish@gmail.com | 2025-05-15 13:44:58.575118+05:30 | 2025-05-15 13:44:58.575136+05:30
+(4 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+
+
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
+#=========== BETWEEN QUERY FROM TO END ===========     
+#====================================================
+>>> from job.models import Jobs
+>>> l_g_salary = Jobs.objects.filter(salary__gte=10000, salary__lte=30000)
+>>> for i in l_g_salary:
+...     print(i.salary)
+... 
+24000.00
+10000.00
+15000.00
+25000.00
+10000.00
+22000.00
+10000.00
+22000.00
+25000.00
+10000.00
+>>> 
+
+==========================> DATABASE VIEW <==========================
+test_3=# SELECT * FROM jobs WHERE salary BETWEEN 10000 AND 30000;
+ id |   name   | age |  department   |  salary  |       email        |            created_at            |            updated_at            
+----+----------+-----+---------------+----------+--------------------+----------------------------------+----------------------------------
+  5 | Hari     |  24 | IT            | 24000.00 | hari@gmail.com     | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  7 | Mukund   |  24 | IT            | 10000.00 | mukund@gmail.com   | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  3 | Ashish   |  23 | Accounts      | 15000.00 | ashish@gmail.com   | 2025-05-15 12:53:39.326063+05:30 | 2025-05-15 12:53:40.040833+05:30
+  8 | Swaraj   |  24 | IT            | 25000.00 | swaraj@gmail.com   | 2025-05-15 13:20:13.335307+05:30 | 2025-05-15 13:20:13.335883+05:30
+  9 | Sathish  |  24 | IT            | 10000.00 | sathish@gmail.com  | 2025-05-15 13:20:13.335936+05:30 | 2025-05-15 13:20:13.335952+05:30
+ 10 | Projyoti |  23 | IT            | 22000.00 | prajyoti@gmail.com | 2025-05-15 13:20:13.336009+05:30 | 2025-05-15 13:20:13.336025+05:30
+ 11 | Rakshita |  22 | Documentation | 10000.00 | rakshita@gmail.com | 2025-05-15 13:20:13.336068+05:30 | 2025-05-15 13:20:13.336082+05:30
+ 12 | Akshata  |  24 | IT            | 22000.00 | akshata@gmail.com  | 2025-05-15 13:20:13.336119+05:30 | 2025-05-15 13:20:13.336133+05:30
+ 17 | Swaraj   |  24 | IT            | 25000.00 | swaraj@gmail.com   | 2025-05-15 13:44:58.574995+05:30 | 2025-05-15 13:44:58.575057+05:30
+ 18 | Sathish  |  24 | IT            | 10000.00 | sathish@gmail.com  | 2025-05-15 13:44:58.575118+05:30 | 2025-05-15 13:44:58.575136+05:30
+(10 rows)
+
+test_3=# 
+==========================> DATABASE VIEW <==========================
+

@@ -1,0 +1,78 @@
+{% extends "Header/header.html" %}
+{% block title %}ORM-Jobs{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center;">ORM Query For Job</h2>
+
+<div class="orm-container">
+  <div class="orm-split">
+    <div class="orm-query">
+      <p><strong>Django ORM:</strong></p>
+      <pre id="orm-snippet" style="white-space: pre-wrap; margin-top: 10px;">
+Jobs.objects.filter(salary__gt=<input type="number" id="orm-salary" placeholder="25000" style="width: 80px;" />)
+      </pre>
+
+      <button onclick="copyORM()" class="copy-btn">Copy ORM</button>
+      <button onclick="runORM()" class="copy-btn" style="right: 90px;">Run ORM</button>
+
+      <hr style="margin: 20px 0;">
+
+      <p><strong>SQL Equivalent:</strong></p>
+
+      <pre id="sql-snippet" style="white-space: pre-wrap; margin-top: 10px;">
+SELECT * FROM jobs WHERE salary > <input type="number" id="sql-salary" placeholder="25000" style="width: 80px;" />;
+      </pre>
+
+      <button onclick="copySQL()" class="copy-btn">Copy SQL</button>
+      <button onclick="runSQL()" class="copy-btn" style="right: 90px;">Run SQL</button>
+
+    </div>
+    <div class="orm-divider"></div>
+
+    <div class="orm-output">
+      <p><strong>Output:</strong></p>
+      <p>This query will return all records from the jobs table where the salary is greater than 25,000.</p>
+      <p>Sample Output:</p>
+      <pre style="white-space: pre-wrap;">
+
+      </pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyORM() {
+    var salary_value = document.getElementById("orm-salary").value || "25000";
+    const queryText = `Jobs.objects.filter(salary__gt=${salary_value})`;
+    navigator.clipboard.writeText(queryText).then(() => {
+      alert("ORM Query copied!");
+    });
+  }
+
+  function runORM() {
+    var salary_value = document.getElementById("orm-salary").value;
+    if (!salary_value) {
+      alert("Please enter a salary value.");
+      return;
+    }
+    console.log("ORM Salary Entered:", salary_value);
+  }
+
+  function copySQL() {
+    var salary_value = document.getElementById("sql-salary").value || "25000";
+    const queryText = `SELECT * FROM jobs WHERE salary > ${salary_value};`;
+    navigator.clipboard.writeText(queryText).then(() => {
+      alert("SQL Query copied!");
+    });
+  }
+
+  function runSQL() {
+    var salary_value = document.getElementById("sql-salary").value;
+    if (!salary_value) {
+      alert("Please enter a salary value.");
+      return;
+    }
+    console.log("SQL Salary Entered:", salary_value);
+  }
+</script>
+{% endblock %}

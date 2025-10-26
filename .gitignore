@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.swp
+*.tmp
+*.log
+
+# Virtual Environment
+venv/
+env/
+.menv/
+menv/
+.menv*/
+.menv/
+
+# Django Stuff
+*.pot
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+*.sqlite3-journal
+db.sqlite3
+media/
+staticfiles/
+
+# VS Code
+.vscode/
+.code-workspace
+
+# Environment / Secrets
+*.env
+.env.*
+.envrc
+secrets.json
+
+# Django Migrations (optional: if you want to ignore compiled migrations)
+# Uncomment the line below to ignore migrations
+# */migrations/*
+
+# Byte-compiled
+*.so
+*.dll
+*.dylib
+
+# PyCharm
+.idea/
+*.iml
+
+# Logs
+logs/
+*.log
+log/
