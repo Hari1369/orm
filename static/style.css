@@ -61,6 +61,21 @@ body {
 }
 
 
+.sidebar-spacer {
+    flex: 1;
+}
+
+.logout-btn {
+    background: #c0392b;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.logout-btn:hover {
+    background: #e74c3c;
+}
+
 /* ORM QUERY LAYOUT */
 .orm-container {
   border: 2px solid black;

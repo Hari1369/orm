@@ -1,5 +1,4 @@
 {% load static %}
-<!-- header.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,40 +7,38 @@
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
 </head>
-    <body>
-        <div class="header">
-            <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-        </div>
-        <div id="sidebar" class="sidebar">
-        </div>
+<body>
+    <div class="header">
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+    </div>
 
-        <div id="sidebar" class="sidebar">
-            <a href="{% url 'dashboard' %}">Home</a>
-            <a href="{% url 'orm_retrival' %}"> Basic Retrieval Queries </a>
-            <a href="{% url 'orm_selection' %}"> Field Selection Queries</a>
-            <a href="{% url 'orm_ordering_uniqueness' %}"> Ordering Uniqueness Queries</a>
-        </div>
+    <div id="sidebar" class="sidebar">
+        <a href="{% url 'dashboard' %}">Home</a>
+        <div class="sidebar-spacer"></div>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
 
-        <div id="main-content" class="content">
-            {% block content %}
-            {% endblock %}
-        </div>
-        <script>
-            function toggleSidebar() {
-                document.body.classList.toggle('sidebar-open');
-            }
-            document.addEventListener('click', function(event) {
-                const sidebar = document.getElementById('sidebar');
-                const menuBtn = document.querySelector('.menu-btn');
+    <div id="main-content" class="content">
+        {% block content %}{% endblock %}
+    </div>
 
-                if (
+    <script>
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+
+            if (
                 document.body.classList.contains('sidebar-open') &&
                 !sidebar.contains(event.target) &&
                 !menuBtn.contains(event.target)
-                ) {
+            ) {
                 document.body.classList.remove('sidebar-open');
-                }
-            });
-        </script>
-    </body>
+            }
+        });
+    </script>
+</body>
 </html>

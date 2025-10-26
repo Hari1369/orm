@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Company(models.Model):
     name = models.CharField(max_length=125)
@@ -41,3 +41,22 @@ class Jobs(models.Model):
         else:
             return "Unknown"
         
+class UserSession(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    login_time = models.DateTimeField(null=True, blank=True)
+    logout_time = models.DateTimeField(null=True, blank=True)
+    duration = models.DurationField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = "user_sessions"
+        
+    def save(self, *args, **kwargs):
+        if self.login_time and self.logout_time:
+            self.duration = self.logout_time - self.login_time
+        super().save(*args, **kwargs)
+        
+    def __str__(self):
+        return f"{self.user.username} | Login: {self.login_time} | Logout: {self.logout_time}"
+    
+    
