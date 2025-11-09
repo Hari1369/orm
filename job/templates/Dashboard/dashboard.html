@@ -1,8 +1,31 @@
 {% extends "Header/header.html" %}
 
-
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
   <h3>Welcome to the Home Page!</h3>
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>Sr no</th>
+      <th>Username</th>
+      <th>Login Time</th>
+      <th>Logout Time</th>
+      <th>Duration</th>
+    </tr>
+
+    {% for s in session_data %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ s.username|default_if_none:"" }}</td>
+      <td>{{ s.login_time|default_if_none:"" }}</td>
+      <td>{{ s.logout_time|default_if_none:"" }}</td>
+      <td>{{ s.duration|default_if_none:"" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">No session data found</td>
+    </tr>
+    {% endfor %}
+  </table>
 {% endblock %}

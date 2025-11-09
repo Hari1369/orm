@@ -9,6 +9,9 @@ import json
 from .forms import LoginForm
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
+from .models import UserSession
+import pprint
+
 
 def log_in_page(request):
     if request.method == "POST":
@@ -16,11 +19,10 @@ def log_in_page(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            
-            # =========================================> DEBUGGER
-            print ("USERNAME : ", username)
-            print ("PASSWORD : ", password)
-            # =========================================> DEBUGGER
+            # # =========================================> DEBUGGER
+            # print ("USERNAME : ", username)
+            # print ("PASSWORD : ", password)
+            # # =========================================> DEBUGGER
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -35,7 +37,6 @@ def log_in_page(request):
             return HttpResponse(f"Something Went Wrong") 
     else:
         form = LoginForm()
-            
     return render(request, "Log_In/log_in.html", {"form": form})
 
 
@@ -48,7 +49,69 @@ def logout_view(request):
 @never_cache
 @login_required(login_url='log_in')
 def show_dashboard(request):
-    return render(request, "Dashboard/dashboard.html")
+    user = request.user
+    # ====================================================================================> CHANGED
+    # get_session_details = UserSession.objects.filter(user=user).order_by('-created_at')
+    # ====================================================================================> CHANGED
+    get_session_details = UserSession.objects.all().order_by('-created_at')
+    session_list = list(get_session_details)
+    length_1 = len(session_list)
+    start_1 = 0
+    stop_1 = length_1
+    step_1 = 1
+
+    session_data_list = []
+
+    for i in range(start_1, stop_1, step_1):
+        s = session_list[i]
+        username = s.user.username
+        if s.login_time:
+            login_time = s.login_time.strftime("%d:%m:%Y %I:%M:%S %p")
+        else:
+            login_time = ""
+        if s.logout_time:
+            logout_time = s.logout_time.strftime("%d:%m:%Y %I:%M:%S %p")
+        else:
+            logout_time = ""
+            
+        if s.duration:
+            total_seconds = int(s.duration.total_seconds())
+            hours = total_seconds // 3600
+            remainder = total_seconds - (hours * 3600)
+            minutes = remainder // 60
+            seconds = remainder - (minutes * 60)
+            if hours > 0:
+                duration = str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
+            elif minutes > 0:
+                duration = str(minutes) + "m " + str(seconds) + "s"
+            else:
+                duration = str(seconds) + "s"
+        else:
+            duration = ""
+        # # =====================================> DEBUGGER
+        # print("LOGIN TIME :", login_time)
+        # print("LOGOUT TIME :", logout_time)
+        # print("-"*40)
+        # # =====================================> DEBUGGER
+
+        session_data = {
+            "username": username,
+            "login_time": login_time,
+            "logout_time": logout_time,
+            "duration": duration
+        }
+
+        session_data_list.append(session_data)
+
+    return render(request, "Dashboard/dashboard.html", {
+        "session_data": session_data_list
+    })
+
+
+
+
+
+
 
 # def show_basic_retrieval(request):
 #     # =============================== Basic Retrival Queries ==============================
