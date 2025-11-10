@@ -6,9 +6,9 @@ from django.apps import AppConfig
 #     name = 'job'
 
 
-class JobConfig(AppConfig):
+class MemberConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'job'
+    name = 'Members'
 
     def ready(self):
-        import job.signals
+        import Members.signals

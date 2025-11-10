@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Avg, Sum, Min, Max, Count, F, Value, Count
 from django.db.models.functions import Concat
-from job.models import Jobs, Company
+from Members.models import Members, Company
 
 # ------------------------------------------------------------------------------
 # |Sr No | Method                 | Description                           |
@@ -25,7 +25,7 @@ from job.models import Jobs, Company
 # ------------------------------------------------------------------------------
 
 class Command(BaseCommand):
-    help = "Insert values into the Jobs table"
+    help = "Insert values into the Members table"
 
     def handle(self, *args, **kwargs):
 
@@ -51,7 +51,7 @@ class Command(BaseCommand):
         choices_1 = input("Choose a method number to run : ").strip()
         print("-----" * 4)
         if choices_1 == '1':
-            obj1 = Jobs.objects.all()
+            obj1 = Members.objects.all()
             start=0
             stop=len(obj1)
             step=1
@@ -68,7 +68,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '2':
-            obj2 = Jobs.objects.values('name')
+            obj2 = Members.objects.values('name')
             start=0
             stop=len(obj2)
             step=1
@@ -80,7 +80,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '3':
-            obj3 = Jobs.objects.get(name='Hari')
+            obj3 = Members.objects.get(name='Hari')
             print(f"NAME : {obj3.name}")
             print(f"SALARY : {obj3.salary}")
             print(f"AGE : {obj3.age}")
@@ -92,7 +92,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '4':
-            obj4 = Jobs.objects.values_list('name', 'salary')
+            obj4 = Members.objects.values_list('name', 'salary')
             start = 0
             stop = len(obj4)
             step = 1
@@ -105,7 +105,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '5':
-            obj5 = Jobs.objects.exclude(department='BackEnd-Developer')
+            obj5 = Members.objects.exclude(department='BackEnd-Developer')
             start=0
             stop=len(obj5)
             step=1
@@ -118,7 +118,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '6':
-            obj6 = Jobs.objects.order_by('salary')
+            obj6 = Members.objects.order_by('salary')
             start=0
             stop=len(obj6)
             step=1
@@ -131,7 +131,7 @@ class Command(BaseCommand):
             
 
         elif choices_1 == '7':
-            obj7 = Jobs.objects.values('department').distinct()
+            obj7 = Members.objects.values('department').distinct()
             start=0
             stop=len(obj7)
             step=1
@@ -143,8 +143,8 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '8':
-            first_1 = Jobs.objects.first()
-            last_1 = Jobs.objects.last()
+            first_1 = Members.objects.first()
+            last_1 = Members.objects.last()
             print(f"FIRST NAME  : {first_1.name}")
             print(f"LAST NAME   : {last_1.name}")
             print("-----" * 4)
@@ -153,7 +153,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '9':
-            obj8 = Jobs.objects.count()
+            obj8 = Members.objects.count()
             print(f"TOTAL COUNT : {obj8}")
             print("-----" * 4)
             # ====================> OPTIONAL|||
@@ -161,7 +161,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '10':
-            obj9 = Jobs.objects.values('department').annotate(count=Count('id'))
+            obj9 = Members.objects.values('department').annotate(count=Count('id'))
             start=0
             stop=len(obj9)
             step=1
@@ -176,7 +176,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '11':
-            obj10 = Jobs.objects.aggregate(MinSalary=Min('salary'), MaxSalary=Max('salary'), AvgSalary=Avg('salary'), TotalSalary=Sum('salary'))
+            obj10 = Members.objects.aggregate(MinSalary=Min('salary'), MaxSalary=Max('salary'), AvgSalary=Avg('salary'), TotalSalary=Sum('salary'))
             print(f"MAX SALARY : {obj10['MinSalary']}")
             print(f"MIN SALARY : {obj10['MaxSalary']}")
             print(f"AVG SALARY : {obj10['AvgSalary']}")
@@ -187,7 +187,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '12':
-            obj11 = Jobs.objects.filter(department='Perl Developer').exists()
+            obj11 = Members.objects.filter(department='Perl Developer').exists()
             if obj11:
                 print("IT EXIST!")
             else:
@@ -198,7 +198,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
         
         elif choices_1 == '13':
-            obj12 = Jobs.objects.select_related('company')
+            obj12 = Members.objects.select_related('company')
             start=0
             stop=len(obj12)
             step=1
@@ -211,7 +211,7 @@ class Command(BaseCommand):
             # ====================> OPTIONAL|||
 
         elif choices_1 == '14':
-            obj13 = Jobs.objects.prefetch_related('company')
+            obj13 = Members.objects.prefetch_related('company')
             start=0
             stop=len(obj13)
             step=1

@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from job.models import Jobs
+from Members.models import Members
 print("=== SINGLE INSERTION USING save() ===")
 
 class Command(BaseCommand):
-    help = "Insert values into the Jobs table"
+    help = "Insert values into the Members table"
 
     def handle(self, *args, **kwargs):
         confirm_1 = input("Confirm to start single insert? (yes/no): ").strip().lower()
@@ -12,7 +12,7 @@ class Command(BaseCommand):
             return
 
         print("=== SINGLE INSERTION COMPLETE! ===")
-        obj_1 = Jobs(name="Ashish",age=23, department="Finance", salary=18000, email="ashish@gmail.com", company_id=1)
+        obj_1 = Members(name="Ashish",age=23, department="Finance", salary=18000, email="ashish@gmail.com", company_id=1)
         obj_1.save()
 
 

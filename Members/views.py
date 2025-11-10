@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import JsonResponse
-from .models import Jobs, Company
+from .models import Members, Company
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate

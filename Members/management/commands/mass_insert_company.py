@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from job.models import Jobs, Company
+from Members.models import Members, Company
 print("=== BULK INSERTION USING bulk_create() ===")
 
 class Command(BaseCommand):

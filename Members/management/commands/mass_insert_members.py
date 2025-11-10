@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from job.models import Jobs
+from Members.models import Members
 print("=== BULK INSERTION USING bulk_create() ===")
 
 class Command(BaseCommand):
-    help = "Insert values into the Jobs table"
+    help = "Insert values into the Members table"
 
     def handle(self, *args, **kwargs):
         confirm_1 = input("Confirm to start bulk insert? (yes/no): ").strip().lower()
@@ -12,7 +12,7 @@ class Command(BaseCommand):
             return
 
         set_data = [
-            Jobs(
+            Members(
                     name="Hari",
                     age=23,
                     department="BackEnd-Developer",
@@ -20,7 +20,7 @@ class Command(BaseCommand):
                     email="hari@gmail.com",
                     company_id=4
                 ),
-                Jobs(
+                Members(
                     name="Swaraj",
                     age=25,
                     department="React Developer",
@@ -28,7 +28,7 @@ class Command(BaseCommand):
                     email="swaraj@gmail.com",
                     company_id=2
                 ),
-                Jobs(
+                Members(
                     name="Rakshita",
                     age=22,
                     department="FrontEnd Developer",
@@ -36,7 +36,7 @@ class Command(BaseCommand):
                     email="rakshita@gmail.com",
                     company_id=3
                 ),
-                Jobs(
+                Members(
                     name="Sathish",
                     age=26,
                     department="Perl Developer",
@@ -46,7 +46,7 @@ class Command(BaseCommand):
                 )
         ]
         print("=== BULK INSERTION COMPLETE! ===")
-        inserted=Jobs.objects.bulk_create(set_data)
+        inserted=Members.objects.bulk_create(set_data)
 
         # =================================> CONDITIONAL LOGIC
 

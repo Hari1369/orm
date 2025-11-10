@@ -12,7 +12,7 @@ class Company(models.Model):
         return self.name
 
 
-class Jobs(models.Model):
+class Members(models.Model):
     name = models.CharField(max_length=125, null=False)
     age = models.IntegerField()
     department = models.CharField(max_length=125, null=False)
@@ -23,7 +23,7 @@ class Jobs(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "jobs"
+        db_table = "members"
 
     def __str__(self):
         if self.name:

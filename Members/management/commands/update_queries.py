@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db.models import F, Q
-from job.models import Jobs, Company
+from Members.models import Jobs, Company
 
 # | Lookup        | Meaning                    |
 # | ------------- | -------------------------- |
