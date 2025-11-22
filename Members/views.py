@@ -1,7 +1,9 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, HttpResponse
+from rest_framework import viewsets
 from django.http import JsonResponse
-from .models import Members, Company
+from .models import Members, Company, api_data
+from .serializers import api_serializers
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
@@ -11,7 +13,6 @@ from django.utils import timezone
 from django.views.decorators.cache import never_cache
 from .models import UserSession
 import pprint
-
 
 def log_in_page(request):
     if request.method == "POST":
@@ -107,12 +108,62 @@ def show_dashboard(request):
         "session_data": session_data_list
     })
 
+@never_cache
+@login_required(login_url='log_in')
+def show_member(request):
+    members = Members.objects.all()
+    member_data = []
+    start = 0
+    stop = len(members)
+    step = 1
+    for i in range(start, stop, step):
+        obj = members[i]
+        name = obj.name
+        department = obj.department
+        salary = obj.salary
+        company_name = obj.company.name
+        
+        member_data.append({
+            'name' : name,
+            'department' : department,
+            'salary' : salary,
+            'company_name' : company_name,
+        })
+        
+    return render(request, "Member/member.html", {
+        'member_data' : member_data
+    })
 
+@never_cache
+@login_required(login_url='log_in')
+def show_company(request):
+    company = Company.objects.all()
+    company_data = []
+    start = 0
+    stop = len(company)
+    step = 1
+    for i in range(start, stop, step):
+        obj = company[i]
+        name = obj.name
+        location = obj.location
 
+        company_data.append({
+            'name' : name,
+            'location' : location
+        })
+        
+    return render(request, "Company/company.html", {
+        'company_data' : company_data
+    })
+        
+    
+# ===================================================> API 
+class api_getdata(viewsets.ModelViewSet):
+    queryset = api_data.objects.all()
+    serializer_class = api_serializers
+# ===================================================> API 
 
-
-
-
+        
 # def show_basic_retrieval(request):
 #     # =============================== Basic Retrival Queries ==============================
 #     # =====================================================================================

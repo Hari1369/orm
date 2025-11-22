@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Members.apps.MemberConfig', 
+    'django_crontab',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +146,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'log_in'
 LOGOUT_REDIRECT_URL = 'log_out'
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'Members.management.cron_management.generate_json.my_scheduled_job'),
+    ('*/2 * * * *', 'Members.management.api_push_cron.push_json_data'),
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}

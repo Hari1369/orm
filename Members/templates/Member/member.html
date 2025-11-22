@@ -1,0 +1,25 @@
+    {% extends "Header/header.html" %}
+    {% block title %}Members List{% endblock %}
+    {% block content %}
+        <h1>Members Details</h1>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Company Name</th>
+            </tr>
+            {% for member in member_data %}
+            <tr>
+                <td>{{ member.name }}</td>
+                <td>{{ member.department }}</td>
+                <td>{{ member.salary }}</td>
+                <td>{{ member.company_name }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+            <td colspan="5">No session data found</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endblock %}
