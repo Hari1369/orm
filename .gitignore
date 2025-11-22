@@ -55,4 +55,4 @@ logs/
 log/
 
 # json
-.json
+*.json
