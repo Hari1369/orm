@@ -2,8 +2,19 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.conf import settings
 import os, json, random, string, pytz
+import sys
+sys.path.append("/home/hari/development_1/orm")
 
-# IST timezone
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm.settings")
+django.setup()
+
+from django.utils import timezone
+from datetime import datetime, timedelta
+from django.conf import settings
+import json, random, string, pytz
+
+
 IST = pytz.timezone('Asia/Kolkata')
 
 def random_string(length=6):
@@ -54,3 +65,14 @@ def my_scheduled_job():
         json.dump(final_data, json_file, indent=4)
 
     print(f"Appended {len(data)} new records. Total: {len(final_data)} — {datetime.now().astimezone(IST)}")
+
+
+
+
+# ==========================
+# 🔥 Call function here
+# ==========================
+if __name__ == "__main__":
+    print("Running JSON generator cron...")
+    my_scheduled_job()
+    print("Completed!")

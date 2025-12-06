@@ -15,7 +15,7 @@ class Command(BaseCommand):
             Members(
                     name="Hari",
                     age=23,
-                    department="BackEnd-Developer",
+                    department="Back-End-Developer",
                     salary=24000,
                     email="hari@gmail.com",
                     company_id=4
@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 Members(
                     name="Rakshita",
                     age=22,
-                    department="FrontEnd Developer",
+                    department="Front-End Developer",
                     salary=24000,
                     email="rakshita@gmail.com",
                     company_id=3

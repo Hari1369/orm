@@ -1,0 +1,91 @@
+{% extends "Header/header.html" %}
+{% block title %}Api Data{% endblock %}
+{% block content %}
+<h1>Data</h1>
+
+<input type="text" id="search-box" placeholder="Search..." style="margin-bottom: 10px; padding: 5px;">
+
+<table class="custom-table" border="1">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Department</th>
+            <th>Log In</th>
+            <th>Log Out</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="pagination" style="margin-top: 10px;">
+    <button id="prev-btn">Previous</button>
+    <span id="page-info"></span>
+    <button id="next-btn">Next</button>
+</div>
+
+<script>
+let currentPage = 1;
+const perPage = 20;
+let currentSearch = "";
+let searchTimeout = null;
+
+function loadData() {
+    fetch(`/api_page_json/?page=${currentPage}&limit=${perPage}&search=${currentSearch}`)
+    .then(response => response.json())
+    .then(data => {
+        const tbody = document.querySelector('.custom-table tbody');
+        tbody.innerHTML = '';
+
+        data.data.forEach((record, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1 + (currentPage-1)*perPage}</td>
+                <td>${record.first_name}</td>
+                <td>${record.last_name}</td>
+                <td>${record.username}</td>
+                <td>${record.department}</td>
+                <td>${record.log_in}</td>
+                <td>${record.log_out}</td>
+                <td>${record.duration}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('page-info').textContent = `Page ${data.page} of ${data.num_pages}`;
+    })
+    .catch(err => console.error(err));
+}
+
+// Real-time search with debounce (300ms delay)
+document.getElementById('search-box').addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        currentSearch = e.target.value.trim();
+        currentPage = 1; // reset to first page
+        loadData();
+    }, 300); // wait 300ms after typing stops
+});
+
+// Pagination buttons
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if(currentPage > 1) { currentPage--; loadData(); }
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+    currentPage++;
+    loadData();
+});
+
+// Auto refresh every 30 seconds
+setInterval(loadData, 30000);
+
+// Initial load
+loadData();
+</script>
+
+
+{% endblock %}

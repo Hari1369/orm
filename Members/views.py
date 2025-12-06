@@ -11,9 +11,17 @@ import json
 from .forms import LoginForm
 from django.utils import timezone
 from django.views.decorators.cache import never_cache
-from .models import UserSession
+from .models import UserSession, api_data
 import pprint
+import pytz
+from django.core.paginator import Paginator
+from django.db.models import Q
 
+
+# =====================================> INDIAN STANDARD TIME
+ist = pytz.timezone('Asia/Kolkata')
+# =====================================> INDIAN STANDARD TIME
+    
 def log_in_page(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -155,6 +163,118 @@ def show_company(request):
     return render(request, "Company/company.html", {
         'company_data' : company_data
     })
+    
+    
+def show_api_page(request):
+    return render(request, "Api_data/api_data.html")
+  
+def api_page(request):
+    search_query = request.GET.get('search', '')
+    page_number = int(request.GET.get('page', 1))
+    per_page = int(request.GET.get('limit', 20))
+    
+    # # ========================================> DEBUGGER
+    # print("SEARCH : ", search_query)
+    # # ========================================> DEBUGGER
+
+    db_api_data = api_data.objects.all().order_by('log_in')
+
+    if search_query:
+        db_api_data = db_api_data.filter(
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
+            Q(username__icontains=search_query) |
+            Q(department__icontains=search_query)
+        )
+
+    paginator = Paginator(db_api_data, per_page)
+    page_obj = paginator.get_page(page_number)
+
+    api_data_1 = []
+    for index, result in enumerate(page_obj, start=1 + (page_number-1)*per_page):
+        api_log_in = result.log_in
+        api_log_out = result.log_out
+        
+        log_in_ist = api_log_in.astimezone(ist).strftime("%Y-%m-%d %I:%M:%S %p")
+        log_out_ist = api_log_out.astimezone(ist).strftime("%Y-%m-%d %I:%M:%S %p")
+        
+        duration = api_log_out - api_log_in
+        hours, remainder = divmod(duration.total_seconds(), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        duration_str = f"{int(hours)}h {int(minutes)}m {int(seconds)}s"
+
+        api_data_1.append({
+            "id": result.id,
+            "first_name": result.first_name,
+            "last_name": result.last_name,
+            "username": result.username,
+            "department": result.department,
+            "log_in": log_in_ist,
+            "log_out": log_out_ist,
+            "duration": duration_str
+        })
+
+    return JsonResponse({
+        "data": api_data_1,
+        "page": page_number,
+        "num_pages": paginator.num_pages,
+        "total_records": paginator.count
+    })
+     
+# ===================================================================================> LOGIC
+# def api_page(request):
+#     query = request.GET.get('q', '')
+#     db_api_data = api_data.objects.all().order_by('log_in')
+#     if query:
+#         db_api_data = db_api_data.filter(
+#             Q(first_name__icontains=query) |
+#             Q(last_name__icontains=query) |
+#             Q(username__icontains=query) |
+#             Q(department__icontains=query)
+#         )
+#     api_data_1 = []
+#     db_api_data = api_data.objects.all().order_by('log_in')
+#     api_data_1 = []
+#     start_1 = 0
+#     stop_1 = len(db_api_data)
+#     step_1 = 1
+#     for i in range(start_1, stop_1, step_1):
+#         result = db_api_data[i]
+#         api_id          = result.id
+#         api_first_name  = result.first_name
+#         api_last_name   = result.last_name
+#         api_username    = result.username
+#         api_department  = result.department
+#         api_log_in      = result.log_in
+#         api_log_out     = result.log_out
+#         log_in_ist = api_log_in.astimezone(ist).strftime("%Y-%m-%d %I:%M:%S %p")
+#         log_out_ist = api_log_out.astimezone(ist).strftime("%Y-%m-%d %I:%M:%S %p")
+#         duration = api_log_out - api_log_in
+#         hours, remainder = divmod(duration.total_seconds(), 3600)
+#         minutes, seconds = divmod(remainder, 60)
+#         duration = f"{int(hours)}h {int(minutes)}m {int(seconds)}s"
+#         api_data_1.append({
+#             "id"            :   api_id,
+#             "first_name"    :   api_first_name,
+#             "last_name"     :   api_last_name,
+#             "username"      :   api_username,
+#             "department"    :   api_department,
+#             "log_in"        :   log_in_ist,
+#             "log_out"       :   log_out_ist,
+#             "duration"      :   duration
+#         })
+#         # # =======================================> DEBUGGER
+#         # print(f"API ID          : {api_id}")
+#         # print(f"API FIRST NAME  : {api_first_name}")
+#         # print(f"API LAST NAME   : {api_last_name}")
+#         # print(f"API DEPARTMENT  : {api_department}")
+#         # print(f"API ID          : {api_log_in}")
+#         # print(f"API LOG OUT     : {api_log_out}")
+#         # # =======================================> DEBUGGER
+#     return JsonResponse({"data": api_data_1})
+# ===================================================================================> LOGIC
+    
+        
         
     
 # ===================================================> API 
