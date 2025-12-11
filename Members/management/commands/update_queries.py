@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db.models import F, Q
-from Members.models import Jobs, Company
+from Members.models import Members, Company
 
 # | Lookup        | Meaning                    |
 # | ------------- | -------------------------- |
@@ -37,7 +37,7 @@ class Command(BaseCommand):
                 print("ABORT!!!")
                 return
             else:
-                obj1 = Jobs.objects.first()
+                obj1 = Members.objects.first()
                 if obj1:
                     obj1.salary = obj1.salary + 1000
                     obj1.save()
@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 print("ABORT!!!")
                 return
             else:
-                obj2 = Jobs.objects.filter(department='Finance')
+                obj2 = Members.objects.filter(department='Finance')
                 start=0
                 stop=len(obj2)
                 step=1
@@ -79,7 +79,7 @@ class Command(BaseCommand):
                 print("ABORTED!!!")
                 return
             else:
-                obj3 = Jobs.objects.update(salary=F('salary') + 2000)
+                obj3 = Members.objects.update(salary=F('salary') + 2000)
                 count = obj3
                 if obj3 > 0:
                     print(f"TOTAL COUNT : {count}")
@@ -95,7 +95,7 @@ class Command(BaseCommand):
                 print("ABORT!!!")
                 return
             else:
-                obj4 = Jobs.objects.filter(Q(salary__lt=23000) | Q(department='Perl Developer')).update(salary=23000)
+                obj4 = Members.objects.filter(Q(salary__lt=23000) | Q(department='Perl Developer')).update(salary=23000)
                 count = obj4
                 if count > 0:
                     print(f"Updated salaries where condition matched {count}")
@@ -108,10 +108,10 @@ class Command(BaseCommand):
                 print("ABORT!!!")
                 return
             else:
-                objs = list(Jobs.objects.all())
+                objs = list(Members.objects.all())
                 for obj in objs:
                     obj.salary = obj.salary + 500
-                Jobs.objects.bulk_update(objs, ['salary'])
+                Members.objects.bulk_update(objs, ['salary'])
                 print("Bulk updated all salaries by +500")
         
         elif choice_2 == "6":
@@ -140,7 +140,7 @@ class Command(BaseCommand):
                     'name': "Rakshita",
                     'defaults': {
                         'age': 22,
-                        'department': "FrontEnd Developer",
+                        'department': "FrontEnd-Developer",
                         'salary': 24000,
                         'email': "rakshita@gmail.com",
                         'company_id': 3
@@ -162,7 +162,7 @@ class Command(BaseCommand):
             created = 0
 
             for item in data:
-                obj, created_flag = Jobs.objects.update_or_create(name=item['name'], defaults=item['defaults'])
+                obj, created_flag = Members.objects.update_or_create(name=item['name'], defaults=item['defaults'])
                 if created_flag:
                     print(f"Created: {obj.name}")
                     created += 1
@@ -173,3 +173,9 @@ class Command(BaseCommand):
             print(f"\nSummary:")
             print(f"✅ Created: {created}")
             print(f"✅ Updated: {updated}")
+            
+            
+            
+        else:
+            print(f"Exit")
+            return

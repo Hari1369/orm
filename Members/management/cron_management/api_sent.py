@@ -127,7 +127,7 @@ def send_request(payload, retries=5, delay=5):
 
 
 def save_json(updated_data):
-    """🔥 Save updated JSON after removing processed record"""
+    """ Save updated JSON after removing processed record """
     with open(JSON_PATH, "w") as f:
         json.dump(updated_data, f, indent=4)
     print("📝 JSON updated (record removed)")
@@ -139,7 +139,6 @@ def push_json_data():
         print("❌ JSON file not found!")
         return
 
-    # Load JSON
     with open(JSON_PATH, "r") as f:
         data = json.load(f)
 
@@ -147,21 +146,18 @@ def push_json_data():
         print("📂 JSON EMPTY — Nothing to send!")
         return
 
-    get_access_token()   # get an access token
+    get_access_token()
 
     success = fail = 0
 
-    # 🔥 Process each record one by one
     index = 0
     while index < len(data):
-
         record = data[index]
-
         payload = {
             "first_name": record["name"],
             "last_name": record["surname"],
             "username": record["username"],
-            "employee_id": int(record["employee_id"].replace("EMP", "")),
+            "employee": record["employee_id"],  # 👈 CHANGE THIS
             "department": record["department"],
             "log_in": record["log_in"],
             "log_out": record["log_out"]
@@ -173,7 +169,6 @@ def push_json_data():
             success += 1
             print(f"✔ Sent record: {record['username']}")
 
-            # 🔥 Remove the sent record
             data.pop(index)
             save_json(data)
 

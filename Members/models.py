@@ -64,7 +64,10 @@ class api_data(models.Model):
     first_name = models.CharField(max_length=100, null=False)
     last_name = models.CharField(max_length=100, null=False)
     username = models.CharField(max_length=25, null=False)
-    employee_id = models.BigIntegerField(null=False)
+    # ======================================================> CHANGED
+    # employee_id = models.BigIntegerField(null=False)
+    employee = models.ForeignKey(Members, on_delete = models.CASCADE, db_column='employee_id')
+    # ======================================================> CHANGED
     department = models.CharField(max_length=225, null=False)
     log_in = models.DateTimeField()  
     log_out = models.DateTimeField()

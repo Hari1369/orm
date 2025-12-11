@@ -15,7 +15,7 @@ class Command(BaseCommand):
             Members(
                     name="Hari",
                     age=23,
-                    department="Back-End-Developer",
+                    department="Back-End Developer",
                     salary=24000,
                     email="hari@gmail.com",
                     company_id=4
@@ -43,7 +43,39 @@ class Command(BaseCommand):
                     salary=21000,
                     email="sathish@gmail.com",
                     company_id=1
-                )
+                ),
+                Members(
+                    name="Mukund",
+                    age=26,
+                    department="Accountant",
+                    salary=18000,
+                    email="mukund@gmail.com",
+                    company_id=3,
+                ),
+                Members(
+                    name="Inder",
+                    age=24,
+                    department="Inter",
+                    salary=2500,
+                    email="inder@gmail.com",
+                    company_id=2
+                ),
+                Members(
+                    name="Pradeep",
+                    age=24,
+                    department="Sales",
+                    salary=15000,
+                    email="pradeep@gmail.com",
+                    company_id=1
+                ),
+                Members(
+                    name="kartik",
+                    age=24,
+                    department="Banking",
+                    salary=15000,
+                    email="kartik@gmail.com",
+                    company_id=4
+                ),
         ]
         print("=== BULK INSERTION COMPLETE! ===")
         inserted=Members.objects.bulk_create(set_data)
