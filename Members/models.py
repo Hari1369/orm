@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Company(models.Model):
-    name = models.CharField(max_length=125)
+    name = models.CharField(max_length=125, unique=True)
     location = models.CharField(max_length=125)
 
     class Meta:
