@@ -30,6 +30,22 @@ class Command(BaseCommand):
             Company(
                 name="Mobitrial",
                 location="Andheri"
+            ),
+            Company(
+                name="HCL Technologies",
+                location="Goregoan"
+            ),
+            Company(
+                name="Wipro Limited",
+                location="Lower Parel"
+            ),
+            Company(
+                name="LTIMindtree Ltd",
+                location="Thane"
+            ),
+            Company(
+                name="Tech Mahindra",
+                location="Navi Mumbai"
             )
         ]
         print("=== BULK INSERTION COMPLETE! ===")
