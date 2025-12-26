@@ -68,6 +68,7 @@
 
 import os
 import sys
+sys.path.append("/app")
 sys.path.append("/home/hari/development_1/orm")
 
 import django
@@ -81,13 +82,18 @@ from django.conf import settings
 
 JSON_PATH = os.path.join(settings.BASE_DIR, "static", "Json_data", "data.json")
 
-API_URL = "http://127.0.0.1:8000/department/test_1/"
+# API_URL = "http://127.0.0.1:8000/department/test_1/"
 
-TOKEN_URL = "http://127.0.0.1:8000/api/token/"
-REFRESH_URL = "http://127.0.0.1:8000/api/token/refresh/"
+# TOKEN_URL = "http://127.0.0.1:8000/api/token/"
+# REFRESH_URL = "http://127.0.0.1:8000/api/token/refresh/"
 
+API_URL = "http://0.0.0.0:8000/department/test_1/"
+
+TOKEN_URL = "http://0.0.0.0:8000/api/token/"
+REFRESH_URL = "http://0.0.0.0:8000/api/token/refresh/"
 # Add your refresh token here
-REFRESH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2NzYyODkxNSwiaWF0IjoxNzY1MDM2OTE1LCJqdGkiOiJlNjZmMDFjODIzNjg0MGZjODkyOGZhOGI2N2NiNzRmYyIsInVzZXJfaWQiOjF9.rwCsLF5BT54eFkwi18VzslWMUnit08jl3-0mrUDre94"
+# REFRESH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2NzYyODkxNSwiaWF0IjoxNzY1MDM2OTE1LCJqdGkiOiJlNjZmMDFjODIzNjg0MGZjODkyOGZhOGI2N2NiNzRmYyIsInVzZXJfaWQiOjF9.rwCsLF5BT54eFkwi18VzslWMUnit08jl3-0mrUDre94"
+REFRESH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2OTM0MzI3OSwiaWF0IjoxNzY2NzUxMjc5LCJqdGkiOiIzMDE5MjIxMDFjZTA0ZTAwOTQ3N2I1ZDJmNTllNDJiMCIsInVzZXJfaWQiOjF9.XMBKKrAyZ1HB5NTPSoDDtXvEJnRDVVfE1LXTO5G_AHM"
 ACCESS_TOKEN = None
 
 

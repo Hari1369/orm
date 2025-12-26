@@ -7,6 +7,8 @@ import psycopg2
 sys.path.append("/home/hari/development_1/orm")
 
 import django
+
+sys.path.append("/app")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm.settings")
 django.setup()
 
@@ -20,9 +22,15 @@ IST = pytz.timezone('Asia/Kolkata')
 
 # =======================================> DATABASE CONFIGURATION
 DB_NAME = "project_1"
-DB_USER = "mcgm"
-DB_PASSWORD = "mcgm"
-DB_HOST = "localhost"
+DB_USER = "quantumd"
+DB_PASSWORD = "admlqq"
+# ==========================> LOCAL
+# DB_HOST = "localhost"
+# ==========================> LOCAL
+
+# ==========================> DOCKER
+DB_HOST = "modules_db"
+# ==========================> DOCKER
 
 conn = psycopg2.connect(
     dbname=DB_NAME,

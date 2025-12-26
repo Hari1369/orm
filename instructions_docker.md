@@ -34,6 +34,11 @@ docker compose exec web python manage.py shell
 docker compose down
 
 
+9) Managment Commands to Run
+docker compose exec modules python manage.py generate_json
+
+
+
 7) ENTER THE POSTGRES DATABASE
 docker compose exec db psql -U quantumd -d project_1
 
