@@ -69,10 +69,10 @@
 import os
 import sys
 sys.path.append("/app")
-sys.path.append("/home/hari/development_1/orm")
+sys.path.append("/home/hari/development_1/modules")
 
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "modules.settings")
 django.setup()
 import time
 

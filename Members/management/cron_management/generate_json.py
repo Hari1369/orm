@@ -4,12 +4,12 @@ from django.conf import settings
 import os, json, random, string, pytz
 import sys
 import psycopg2
-sys.path.append("/home/hari/development_1/orm")
+sys.path.append("/home/hari/development_1/modules")
 
 import django
 
 sys.path.append("/app")
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "modules.settings")
 django.setup()
 
 from django.utils import timezone
