@@ -4,7 +4,11 @@ from django.conf import settings
 import os, json, random, string, pytz
 import sys
 import psycopg2
-sys.path.append("/home/hari/development_1/modules")
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 
 import django
 

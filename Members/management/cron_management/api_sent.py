@@ -71,9 +71,14 @@ import sys
 sys.path.append("/app")
 sys.path.append("/home/hari/development_1/modules")
 
-import django
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "modules.settings")
+
+import django
 django.setup()
+
 import time
 
 import json

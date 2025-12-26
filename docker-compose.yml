@@ -9,14 +9,18 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    environment:
+      DJANGO_ENV: docker
     depends_on:
       - db
+
+
 
   db:
     image: postgres:15
     container_name: modules_db
     environment:
-      POSTGRES_DB: project_1
+      POSTGRES_DB: modules
       POSTGRES_USER: quantumd
       POSTGRES_PASSWORD: admlqq
     volumes:

@@ -46,8 +46,9 @@ docker compose up -d db
 
 
 
-
-
+<!-- TO RUN THE ENV FILE BEFORE MIGRATIONS -->
+export $(cat .env.local | xargs)
+<!-- ===================================== -->
 
 
 

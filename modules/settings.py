@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -87,7 +88,8 @@ WSGI_APPLICATION = 'modules.wsgi.application'
 # }
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+ENV = config('DJANGO_ENV', default='local')
+DB_HOST = 'db' if ENV == 'docker' else '127.0.0.1'
 
 DATABASES = {
     'default': {
@@ -95,10 +97,12 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
+        'HOST': DB_HOST,
         'PORT': config('DB_PORT', cast=int),
     }
 }
+
+
 
 
 # Password validation
